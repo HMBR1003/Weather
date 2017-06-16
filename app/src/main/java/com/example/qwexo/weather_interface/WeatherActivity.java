@@ -1,5 +1,7 @@
 package com.example.qwexo.weather_interface;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +28,7 @@ public class WeatherActivity extends AppCompatActivity {
     Weather we;
     Dust dust;
     ValueEventListener listener;
+    ProgressDialog progress;
 
     TextView dateText, amTempText, amSkyText, pmTempText, pmSkyText, dustGradeText, dustValueText;
     ImageView pmSkyImage, amSkyImage;
@@ -78,6 +81,7 @@ public class WeatherActivity extends AppCompatActivity {
                     count++;
                 }
                 adapter.notifyDataSetChanged();
+                progress.dismiss();
             }
 
             @Override
@@ -150,6 +154,12 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        progress = new ProgressDialog(WeatherActivity.this);
+        progress.setProgress(ProgressDialog.STYLE_SPINNER);
+        progress.setMessage("데이터를 불러오는중입니다.");
+        progress.setCancelable(false);
+        progress.show();
+
         intent = getIntent();
         String city = intent.getStringExtra("city");
 //        String city = "서울송파구잠실동";
